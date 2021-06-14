@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test Test</title>
+
+    <!--Add some cool libraries-->
+    <script src="Scripts/jquery-3.3.1.js"></script>
+
+    <!--Add some temporary libraries we aren't sure about yet-->
+    <script src="Scripts/vue.global.js"></script>
+    <!--doesnt exist. <script src="//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/4.0.0/vuedraggable.umd.min.js"></script>-->
+    <script src="Scripts/Sortable.min.js"></script>
+    <script src="Scripts/vue-draggable-next.global.js"></script>
+
+    <!--Set up communication with the main process first-->
+    <script src="Scripts/ElectronMainProcessCalls.js"></script>
+
+    <!--This screen has got to be interactive-->
+    <script src="Scripts/Files-Vue.js"></script>
+</head>
+<body style="color:white">
+    <div>i am other content that isn't in the draggable list</div>
+    <div>so am i</div>
+    <div id="iamaportionofthepage" style="background-color: grey; margin:10px; padding:10px; height:500px;" >
+        <draggable 
+            v-model="files"
+            @start="drag=true"
+            @end="drag=false"
+            group="filenames"
+            tag="transition-group"
+            :component-data="{
+                tag: 'div',
+                type: 'transition-group',
+                name: !drag ? 'flip-list' : null
+            }">
+            <template #item="{element, index}">
+                <div style="background-color: black; color: white; border-radius: 10px; margin:5px; padding-left:5px">
+                    {{index}}. {{element}}
+                </div>
+            </template>
+        </draggable>
+
+        <div style="color:red">that didn't work. what about normal vuejs lists?</div>
+        
+        <div v-for="(file, index) in files" style="background-color: black; color: white; border-radius: 10px; margin:5px; padding-left:5px">
+            {{index}}. {{file}}
+        </div>
+    </div>
+    <script>LoadPage()</script>
+</body>
+</html>
